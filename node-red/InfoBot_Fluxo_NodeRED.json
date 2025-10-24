@@ -1,0 +1,219 @@
+[
+    {
+        "id": "a6d2045febd1d986",
+        "type": "tab",
+        "label": "Fluxo 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "60ab4a7023ada97b",
+        "type": "telegram receiver",
+        "z": "a6d2045febd1d986",
+        "name": "",
+        "bot": "d92f3c51545bf03b",
+        "saveDataDir": "",
+        "filterCommands": false,
+        "x": 210,
+        "y": 200,
+        "wires": [
+            [
+                "2a49e8bf0f2a53b2",
+                "e315dcb5300dc5e9"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "3cabe92c937a7d29",
+        "type": "watson-assistant-v2",
+        "z": "a6d2045febd1d986",
+        "name": "InfoBot",
+        "service-endpoint": "https://api.au-syd.assistant.watson.cloud.ibm.com/instances/bbb1d3ce-3318-440c-80a9-b2962a91efa2",
+        "assistant_id": "97187cb7-ee36-4484-bc19-033011b83dc3",
+        "debug": false,
+        "restart": false,
+        "return_context": true,
+        "alternate_intents": false,
+        "multisession": true,
+        "timeout": "",
+        "optout-learning": false,
+        "persist-session-id": false,
+        "x": 720,
+        "y": 200,
+        "wires": [
+            [
+                "a335ad2b948e323a"
+            ]
+        ]
+    },
+    {
+        "id": "94786dd75bf00044",
+        "type": "telegram sender",
+        "z": "a6d2045febd1d986",
+        "name": "",
+        "bot": "d92f3c51545bf03b",
+        "haserroroutput": false,
+        "outputs": 1,
+        "x": 1490,
+        "y": 200,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "2a49e8bf0f2a53b2",
+        "type": "debug",
+        "z": "a6d2045febd1d986",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 420,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "e315dcb5300dc5e9",
+        "type": "change",
+        "z": "a6d2045febd1d986",
+        "name": "Prepara entrada",
+        "rules": [
+            {
+                "t": "set",
+                "p": "params.session_id",
+                "pt": "msg",
+                "to": "payload.chatId",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "chatId",
+                "pt": "msg",
+                "to": "payload.chatId",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.content",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 480,
+        "y": 200,
+        "wires": [
+            [
+                "3cabe92c937a7d29"
+            ]
+        ]
+    },
+    {
+        "id": "a335ad2b948e323a",
+        "type": "change",
+        "z": "a6d2045febd1d986",
+        "name": "Prepara retorno",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload.chatId",
+                "pt": "msg",
+                "to": "chatId",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "payload.type",
+                "pt": "msg",
+                "to": "message",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "payload.content",
+                "pt": "msg",
+                "to": "payload.output.generic[0].text",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 920,
+        "y": 200,
+        "wires": [
+            [
+                "4a48e301a985e464"
+            ]
+        ]
+    },
+    {
+        "id": "4a48e301a985e464",
+        "type": "function",
+        "z": "a6d2045febd1d986",
+        "name": "Concatena mensagens",
+        "func": "if (msg.payload.output && msg.payload.output.generic) {\n    let textos = msg.payload.output.generic\n        .filter(item => item.response_type === \"text\" && item.text)\n        .map(item => item.text)\n        .join(\"\\n\");\n\n    msg.payload = {\n        chatId: msg.chatId,\n        type: \"message\",\n        content: textos\n    };\n}\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1190,
+        "y": 200,
+        "wires": [
+            [
+                "94786dd75bf00044"
+            ]
+        ]
+    },
+    {
+        "id": "d92f3c51545bf03b",
+        "type": "telegram bot",
+        "botname": "InfoBot",
+        "usernames": "",
+        "chatids": "",
+        "baseapiurl": "",
+        "testenvironment": false,
+        "updatemode": "polling",
+        "pollinterval": "300",
+        "usesocks": false,
+        "sockshost": "",
+        "socksprotocol": "socks5",
+        "socksport": 6667,
+        "socksusername": "anonymous",
+        "sockspassword": "",
+        "bothost": "",
+        "botpath": "",
+        "localbothost": "0.0.0.0",
+        "localbotport": 8443,
+        "publicbotport": 8443,
+        "privatekey": "",
+        "certificate": "",
+        "useselfsignedcertificate": false,
+        "sslterminated": false,
+        "verboselogging": false
+    },
+    {
+        "id": "34a8ac6096f6b08a",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "node-red-contrib-telegrambot": "16.3.3",
+            "node-red-node-watson": "0.10.3"
+        }
+    }
+]
