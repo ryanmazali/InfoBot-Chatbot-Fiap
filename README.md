@@ -86,13 +86,14 @@ Respostas inteligentes e contextuais
 
 O fluxo é composto pelos seguintes nós:
 
-| Tipo de Nó | Nome | Função |
-|-------------|------|--------|
-| 🟢 `telegram receiver` | Recebe mensagens do usuário via Telegram |
-| 🟡 `change` | Prepara entrada e formata o conteúdo para o Watson |
-| 🔵 `watson-assistant-v2` | Envia e recebe mensagens da IA cognitiva |
-| 🟠 `function` | Concatena múltiplas respostas em um único texto |
-| 🔴 `telegram sender` | Retorna a mensagem final ao usuário |
+| Tipo de Nó | Nome no Fluxo | Função |
+|-------------|---------------|--------|
+| 🟢 `telegram receiver` | — | Recebe mensagens enviadas pelo usuário no Telegram |
+| 🟡 `change` | Prepara entrada | Formata o conteúdo recebido para o formato esperado pelo Watson |
+| 🔵 `watson-assistant-v2` | InfoBot | Envia as mensagens ao IBM Watson Assistant e recebe as respostas cognitivas |
+| 🟠 `function` | Concatena mensagens | Junta várias respostas do Watson em um único texto coerente |
+| 🟡 `change` | Prepara retorno | Ajusta o formato da mensagem para envio ao Telegram |
+| 🔴 `telegram sender` | — | Envia a resposta final do bot para o usuário no Telegram |
 
 ---
 
