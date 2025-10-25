@@ -8,7 +8,7 @@ const server = http.createServer();
 const settings = {
   httpAdminRoot: "/red",    // painel do editor
   httpNodeRoot: "/",        // endpoints das flows
-  userDir: "/data",         // diretório de dados
+  userDir: "./data",         // diretório de dados
   functionGlobalContext: {}
 };
 
