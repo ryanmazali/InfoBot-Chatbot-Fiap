@@ -1,0 +1,12 @@
+{
+  "name": "infobot-node-red",
+  "version": "1.0.0",
+  "description": "Node-RED flow for InfoBot integrated with IBM Watson Assistant",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "node-red": "^4.0.0"
+  }
+}
